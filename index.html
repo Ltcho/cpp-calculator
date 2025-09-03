@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Should I book with cash or points?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        /* Remove spinners from number inputs */
+        input::-webkit-inner-spin-button,
+        input::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="text"] {
+            -moz-appearance: textfield;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-prefix {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-size: 16px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .input-with-prefix {
+            padding-left: 28px;
+        }
+
+        .optional-label {
+            color: #999;
+            font-size: 12px;
+            font-weight: normal;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            animation: slideIn 0.5s ease;
+            display: none;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .result.poor {
+            background: linear-gradient(135deg, #f5f5f5 0%, #ffd6d6 100%);
+            border: 2px solid #ff6b6b;
+        }
+
+        .result.fair {
+            background: linear-gradient(135deg, #f5f5f5 0%, #fff3d6 100%);
+            border: 2px solid #ffa94d;
+        }
+
+        .result.good {
+            background: linear-gradient(135deg, #f5f5f5 0%, #d3f9d8 100%);
+            border: 2px solid #51cf66;
+        }
+
+        .result.excellent {
+            background: linear-gradient(135deg, #d3f9d8 0%, #b2f2bb 100%);
+            border: 2px solid #37b24d;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(55, 178, 77, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(55, 178, 77, 0);
+            }
+        }
+
+        .cpp-value {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .cpp-value.poor {
+            color: #ff6b6b;
+        }
+
+        .cpp-value.fair {
+            color: #ffa94d;
+        }
+
+        .cpp-value.good {
+            color: #51cf66;
+        }
+
+        .cpp-value.excellent {
+            color: #37b24d;
+        }
+
+        .recommendation {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .formula {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+            font-size: 12px;
+            color: #999;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .cpp-value {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✈️ Should I book with cash or points?</h1>
+        <p class="subtitle">Calculate the cents per point value of your award redemption</p>
+        
+        <div class="input-group">
+            <label for="points">Roundtrip Award Rate (Points)</label>
+            <input type="text" id="points" placeholder="e.g., 50,000">
+        </div>
+        
+        <div class="input-group">
+            <label for="taxes">Taxes and Fees <span class="optional-label">(Optional)</span></label>
+            <div class="input-wrapper">
+                <span class="input-prefix">$</span>
+                <input type="text" id="taxes" placeholder="e.g., 250" class="input-with-prefix">
+            </div>
+        </div>
+        
+        <div class="input-group">
+            <label for="cash">Cash Price</label>
+            <div class="input-wrapper">
+                <span class="input-prefix">$</span>
+                <input type="text" id="cash" placeholder="e.g., 1,500" class="input-with-prefix">
+            </div>
+        </div>
+        
+        <button onclick="calculateCPP()">Calculate</button>
+        
+        <div id="result" class="result">
+            <div id="cppDisplay" class="cpp-value"></div>
+            <div id="recommendation" class="recommendation"></div>
+            <div class="formula">CPP = (Cash Price - Taxes) ÷ Points × 100</div>
+        </div>
+    </div>
+
+    <script>
+        // Format number with commas
+        function formatWithCommas(value) {
+            // Remove non-numeric characters except decimal point
+            const number = value.replace(/[^\d.]/g, '');
+            // Split by decimal point
+            const parts = number.split('.');
+            // Add commas to integer part
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            // Join back with decimal if exists
+            return parts.join('.');
+        }
+        
+        // Parse number from formatted string
+        function parseNumber(value) {
+            if (!value) return 0;
+            return parseFloat(value.replace(/,/g, ''));
+        }
+        
+        // Add formatting on input
+        document.getElementById('points').addEventListener('input', function(e) {
+            const cursorPos = e.target.selectionStart;
+            const oldLength = e.target.value.length;
+            e.target.value = formatWithCommas(e.target.value);
+            const newLength = e.target.value.length;
+            // Only set selection if the element supports it
+            if (e.target.setSelectionRange) {
+                e.target.setSelectionRange(cursorPos + (newLength - oldLength), cursorPos + (newLength - oldLength));
+            }
+        });
+        
+        document.getElementById('taxes').addEventListener('input', function(e) {
+            const cursorPos = e.target.selectionStart;
+            const oldLength = e.target.value.length;
+            e.target.value = formatWithCommas(e.target.value);
+            const newLength = e.target.value.length;
+            // Only set selection if the element supports it
+            if (e.target.setSelectionRange) {
+                e.target.setSelectionRange(cursorPos + (newLength - oldLength), cursorPos + (newLength - oldLength));
+            }
+        });
+        
+        document.getElementById('cash').addEventListener('input', function(e) {
+            const cursorPos = e.target.selectionStart;
+            const oldLength = e.target.value.length;
+            e.target.value = formatWithCommas(e.target.value);
+            const newLength = e.target.value.length;
+            // Only set selection if the element supports it
+            if (e.target.setSelectionRange) {
+                e.target.setSelectionRange(cursorPos + (newLength - oldLength), cursorPos + (newLength - oldLength));
+            }
+        });
+        
+        function calculateCPP() {
+            const pointsInput = document.getElementById('points').value;
+            const taxesInput = document.getElementById('taxes').value;
+            const cashInput = document.getElementById('cash').value;
+            
+            const points = parseNumber(pointsInput);
+            const taxes = parseNumber(taxesInput) || 0;
+            const cash = parseNumber(cashInput);
+            
+            // Validation
+            if (!points || points <= 0 || isNaN(points)) {
+                alert('Please enter a valid number of points');
+                return;
+            }
+            
+            if (!cash || cash <= 0 || isNaN(cash)) {
+                alert('Please enter a valid cash price');
+                return;
+            }
+            
+            if (cash <= taxes) {
+                alert('Cash price must be greater than taxes and fees');
+                return;
+            }
+            
+            // Calculate CPP
+            const cpp = ((cash - taxes) / points) * 100;
+            
+            // Display result
+            const resultDiv = document.getElementById('result');
+            const cppDisplay = document.getElementById('cppDisplay');
+            const recommendationDiv = document.getElementById('recommendation');
+            
+            // Format CPP to 2 decimal places
+            cppDisplay.textContent = cpp.toFixed(2) + '¢ per point';
+            
+            // Remove all classes first
+            resultDiv.className = 'result show';
+            cppDisplay.className = 'cpp-value';
+            
+            // Determine recommendation and styling
+            if (cpp < 1.0) {
+                resultDiv.classList.add('poor');
+                cppDisplay.classList.add('poor');
+                recommendationDiv.innerHTML = '❌ <strong>Book with cash</strong>, or, if you must use points, book through your credit card portal for better redemption value.';
+            } else if (cpp >= 1.0 && cpp < 1.5) {
+                resultDiv.classList.add('fair');
+                cppDisplay.classList.add('fair');
+                recommendationDiv.innerHTML = '⚠️ <strong>Book with cash</strong> unless you have an excessive amount of points to use up.';
+            } else if (cpp >= 1.5 && cpp < 2.0) {
+                resultDiv.classList.add('good');
+                cppDisplay.classList.add('good');
+                recommendationDiv.innerHTML = '✅ <strong>Book with points.</strong> This is a good value for your points! (If you have Chase points, it might be worth checking the portal to see if this flight is qualifies for Points Boost)';
+            } else {
+                resultDiv.classList.add('excellent');
+                cppDisplay.classList.add('excellent');
+                recommendationDiv.innerHTML = '🎉 <strong>Book with points and do it fast!</strong> This is a great deal!';
+            }
+        }
+        
+        // Allow Enter key to trigger calculation
+        document.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                calculateCPP();
+            }
+        });
+    </script>
+</body>
+</html>
