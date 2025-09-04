@@ -13,7 +13,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #FFFBED;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -28,6 +28,7 @@
             padding: 40px;
             max-width: 500px;
             width: 100%;
+            border: 2px solid #004449;
             transform: translateY(0);
             transition: transform 0.3s ease;
         }
@@ -37,7 +38,7 @@
         }
 
         h1 {
-            color: #333;
+            color: #004449;
             text-align: center;
             margin-bottom: 10px;
             font-size: 28px;
@@ -45,7 +46,7 @@
 
         .subtitle {
             text-align: center;
-            color: #666;
+            color: #004449;
             margin-bottom: 30px;
             font-size: 14px;
         }
@@ -57,7 +58,7 @@
         label {
             display: block;
             margin-bottom: 8px;
-            color: #555;
+            color: #004449;
             font-weight: 500;
             font-size: 14px;
         }
@@ -65,17 +66,19 @@
         input {
             width: 100%;
             padding: 12px;
-            border: 2px solid #e0e0e0;
+            border: 2px solid #004449;
+            opacity: 0.7;
             border-radius: 10px;
             font-size: 16px;
             transition: border-color 0.3s ease;
         }
 
         input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
+    outline: none;
+    border-color: #004449;
+    background: #FFFBED;
+    opacity: 1;
+}
         /* Remove spinners from number inputs */
         input::-webkit-inner-spin-button,
         input::-webkit-outer-spin-button {
@@ -96,7 +99,7 @@
             left: 12px;
             top: 50%;
             transform: translateY(-50%);
-            color: #666;
+            color: #004449;
             font-size: 16px;
             pointer-events: none;
             z-index: 1;
@@ -115,7 +118,7 @@
         button {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #483CFF;
             color: white;
             border: none;
             border-radius: 10px;
@@ -129,6 +132,7 @@
         button:hover {
             transform: scale(1.02);
             box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+            background: #3B30D6;
         }
 
         button:active {
@@ -214,14 +218,14 @@
         .recommendation {
             font-size: 16px;
             line-height: 1.5;
-            color: #333;
+            color: #004449;
             font-weight: 500;
         }
 
         .formula {
             margin-top: 15px;
             padding-top: 15px;
-            border-top: 1px solid #ddd;
+            border-top: 1px solid #004449;
             font-size: 12px;
             color: #999;
         }
@@ -381,7 +385,7 @@
             } else if (cpp >= 1.5 && cpp < 2.0) {
                 resultDiv.classList.add('good');
                 cppDisplay.classList.add('good');
-                recommendationDiv.innerHTML = '✅ <strong>Book with points.</strong> This is a good value for your points! (If you have Chase points, it might be worth checking the portal to see if this flight is qualifies for Points Boost)';
+                recommendationDiv.innerHTML = '✅ <strong>Book with points.</strong> This is a good value for your points!<br><br> (If you have Chase points, it might be worth checking the portal to see if this flight qualifies for Points Boost)';
             } else {
                 resultDiv.classList.add('excellent');
                 cppDisplay.classList.add('excellent');
