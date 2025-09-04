@@ -248,7 +248,10 @@
 <body>
     <div class="container">
         <h1>✈️ Should I book with cash or points?</h1>
-        <p class="subtitle">Calculate the cents per point value of your award redemption</p>
+        <p class="subtitle">
+            Make sure you are comparing the same fare class 
+            <br>(e.g., main cabin vs main cabin)
+        </p>
         
         <div class="input-group">
             <label for="points">Roundtrip Award Rate (Points)</label>
@@ -386,10 +389,10 @@
                 resultDiv.classList.add('good');
                 cppDisplay.classList.add('good');
                 recommendationDiv.innerHTML = '✅ <strong>Book with points.</strong> This is a good value for your points!<br><br> (If you have Chase points, it might be worth checking the portal to see if this flight qualifies for Points Boost)';
-            } else {
+            } else if (cpp > 2.0) {
                 resultDiv.classList.add('excellent');
                 cppDisplay.classList.add('excellent');
-                recommendationDiv.innerHTML = '🎉 <strong>Book with points and do it fast!</strong> This is a great deal!';
+                recommendationDiv.innerHTML = '🎉 <strong>Book with points and do it fast!</strong> This is a great redemption value!';
             }
         }
         
