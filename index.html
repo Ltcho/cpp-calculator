@@ -256,28 +256,29 @@
             text: '⚡ <strong>Book fast.</strong> This is a great points deal. Stop reading and start transferring.'
           }
         },
-        bad: {
-          POOR: {
-            class: 'no',
-            text: '❌ <strong>Skip the redemption.</strong> This one\'s not worth your points. Book with cash, or if you\'re set on using points, check out your credit card\'s travel portal.'
-          },
-          FAIR: {
-            class: 'no',
-            text: '💳 <strong>Better deal in your credit card portal.</strong> Cash wins this time, but if you\'re set on using points, check out your credit card\'s travel portal.'
-          },
-          GOOD: {
-            class: highTaxes ? 'maybe' : 'yes',
-            text: highTaxes 
-              ? '⏳ <strong>Hold off for now.</strong> Both the cash and points prices are high. If you\'ve got time, set a price alert and wait for a better deal.'
-              : '🟢 <strong>Solid redemption.</strong> Taxes are a bit higher, but the overall value still makes this a great redemption.'
-          },
-          EXCELLENT: {
-            class: highTaxes ? 'maybe' : 'yes',
-            text: highTaxes 
-              ? '📉 <strong>Wait for a price drop.</strong> Both the cash and points prices are high. If you\'ve got time, set a price alert and wait for a better deal.'
-              : '🟢 <strong>Solid redemption.</strong> Taxes are a bit higher, but the overall value still makes this a great redemption.'
-          }
-        }
+bad: {
+  POOR: {
+    class: 'no',
+    text: '❌ <strong>Skip the redemption.</strong> This one\'s not worth your points. Book with cash, or if you\'re set on using points, check your credit card\'s travel portal for a better option.'
+  },
+  FAIR: {
+    class: 'no',
+    text: '💳 <strong>Better deal in your credit card portal.</strong> Cash wins this time, but if you\'re set on using points, check out your credit card\'s travel portal.'
+  },
+  GOOD: {
+    class: highTaxes ? 'yes' : 'maybe',
+    text: highTaxes
+      ? '🟢 <strong>Solid redemption.</strong> Taxes are a bit higher, but the overall value still makes this a great redemption.'
+      : '⏳ <strong>Hold off for now.</strong> Both the cash and points prices are high. If you’ve got time, set a price alert and wait for a better deal.'
+  },
+  EXCELLENT: {
+    class: highTaxes ? 'yes' : 'maybe',
+    text: highTaxes
+      ? '🟢 <strong>Solid redemption.</strong> Taxes are a bit higher, but the overall value still makes this a great redemption.'
+      : '📉 <strong>Wait for a price drop.</strong> Both the cash and points prices are high. If you’ve got time, set a price alert and wait for a better deal.'
+  }
+}
+
       };
       
       const category = meetsStandards ? 'good' : 'bad';
@@ -356,8 +357,7 @@
         elements.cppValue.textContent = cpp.toFixed(2) + '¢';
         elements.cppRating.textContent = '';
         
-        const highTaxes = (formData.taxes > taxCap && formData.points <= maxPoints);
-        
+const highTaxes = formData.taxes > taxCap;        
         const rec = getRecommendation(meetsStandards, cppTier, highTaxes);
         recommendationClass = rec.class;
         recommendationText = rec.text;
