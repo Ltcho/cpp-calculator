@@ -241,7 +241,9 @@
         good: {
           POOR: {
             class: 'maybe',
-            text: '💵 <strong>Cash wins.</strong> This is a solid points redemption, but the cash price is even better. If you\'re set on using points, try booking through your credit card travel portal instead.'
+text: `💵 <strong>Cash wins.</strong> This is a solid points redemption, but the cash price is even better. If you’re set on using points, try booking through your credit card’s 
+<a href="https://www.going.com/guides/credit-card-travel-portal-vs-points-transfer-to-airlines" target="_blank" style="color:#004449; text-decoration:underline; font-weight:600;">
+travel portal</a> instead.`
           },
           FAIR: {
             class: 'maybe',
@@ -259,11 +261,15 @@
 bad: {
   POOR: {
     class: 'no',
-    text: '❌ <strong>Skip the redemption.</strong> This one\'s not worth your points. Book with cash, or if you\'re set on using points, check your credit card\'s travel portal for a better option.'
+    text: `❌ <strong>Skip the redemption.</strong> This one’s not worth your points. Book with cash, or if you’re set on using points, check out your credit card’s 
+<a href="https://www.going.com/guides/credit-card-travel-portal-vs-points-transfer-to-airlines" target="_blank" style="color:#004449; text-decoration:underline; font-weight:600;">
+travel portal</a>.`
   },
   FAIR: {
     class: 'no',
-    text: '💳 <strong>Better deal in your credit card portal.</strong> Cash wins this time, but if you\'re set on using points, check out your credit card\'s travel portal.'
+text: `💳 <strong>Better deal in your credit card portal.</strong> Cash wins this time, but if you’re set on using points, check your credit card’s 
+<a href="https://www.going.com/guides/credit-card-travel-portal-vs-points-transfer-to-airlines" target="_blank" style="color:#004449; text-decoration:underline; font-weight:600;">
+travel portal</a>.`
   },
   GOOD: {
     class: highTaxes ? 'yes' : 'maybe',
@@ -376,7 +382,14 @@ const highTaxes = formData.taxes > taxCap;
           if (taxExceedsCap && !pointsExceedLimit) {
             recommendationText = '💰 <strong>Taxes kill the deal.</strong> Taxes are higher than usual for this redemption. Enter the cash fare to see if paying out of pocket gives you a better deal.';
           } else {
-            recommendationText = '🚫 <strong>Not worth your points.</strong> The redemption rate isn\'t great. You can get way more value elsewhere.\n\nCheck out our current live points deals to see how far your points can go, or check if you should book with cash.';
+recommendationText = `
+🚫 <strong>Not worth your points.</strong> The redemption rate isn't great. You can get way more value elsewhere.<br><br>
+Check out 
+<a href="https://going.com/points-deals" target="_blank" style="color:#004449; text-decoration:underline; font-weight:600;">
+our current live points deals
+</a>
+to see how far your points can go, or check if you should book with cash.
+`;
           }
         }
       }
