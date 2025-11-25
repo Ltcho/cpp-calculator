@@ -58,7 +58,7 @@
               <option value="Asia">Asia</option>
               <option value="Oceania">Oceania</option>
               <option value="Africa">Africa</option>
-              <option value="Southern America">South America</option>
+              <option value="Southern America">Southern America</option>
             </select>
           </div>
         </div>
@@ -88,7 +88,7 @@
 
         <div class="form-group">
           <label for="cashPrice">Cash Price ($) (optional)</label>
-          <input type="text" id="cashPrice" inputmode="decimal" placeholder="What does this flight cost in cash?">
+          <input type="text" id="cashPrice" inputmode="decimal" placeholder="What would this flight cost in cash?">
         </div>
 
         <button type="submit">Analyze Deal</button>
@@ -114,12 +114,11 @@
   </div>
 
   <script>
-    // ==================== DATA CONFIGURATION ====================
     const CONFIG = {
       airports: {
         big: ["ATL","BOS","DFW","DTW","EWR","IAD","IAH","JFK","LAX","LGA","MIA","ORD","SFO"],
         medium: ["AUS","CLT","CLE","CVG","DEN","LAS","MCO","MSP","PDX","PHL","PHX","RDU","SAN","SEA","SLC","TPA"],
-        small: ["ABE","ABQ","AEX","AUG","ALB","AMA","ANC","ASE","ATW","AVL","BDL","BGR","BHM","BIL","BLI","BMI","BNA","BOI","BTV","BUF","BUR","BWI","BZN","CAE","CAK","CHA","CHO","CHS","CID","CMH","CMI","COD","COS","CRP","CRW","CYS","CWA","IDA","ILG","SFB","DAB","DAL","DAY","DCA","DLH","DRO","DSM","ECP","EGE","ELP","EUG","EVV","EWN","EYW","FAI","FAR","FAT","FAY","FCA","FLL","FSD","FWA","GEG","GJT","GPT","GRB","GRR","GSO","GSP","GTF","GTR","GUM","HHH","HLN","HNL","HOU","HPN","HSV","HVN","ICT","ILM","IND","ISP","ITO","JAC","JAN","JAX","NYC","JLN","JNU","KOA","LBB","LCH","LEX","LGB","LIH","LIT","LNK","LRD","LYH","MAF","MCI","MDT","CHI","MEI","MEM","MFE","MFR","MGM","MHT","MKE","MLB","MLI","MOB","MOT","MQT","MSN","MSO","MSY","MTJ","MRY","MYR","OAK","OGG","OKC","OMA","ONT","ORF","ORH","PAE","PBI","PIA","PIT","PNS","PSC","PSP","PVD","PVU","PWM","RAP","RDD","RDM","RIC","RNO","ROA","ROC","RST","RSW","SAF","SAT","SAV","SBA","SBN","SDF","SCE","SGF","SHV","SJC","SJU","SMF","SNA","SRQ","STL","STS","STT","SUN","SUX","SWF","SYR","TLH","TUL","TUS","TVC","TWF","TYS","VPS","XNA","YUM"]
+        small: ["ABE","ABQ","AEX","AUG","ALB","AMA","ANC","ASE","ATW","AVL","BDL","BGR","BHM","BIL","BLI","BMI","BNA","BOI","BTV","BUF","BUR","BWI","BZN","CAE","CAK","CHA","CHO","CHS","CID","CMH","CMI","COD","COS","CRP","CRW","CYS","DAB","DAL","DAY","DCA","DLH","DRO","DSM","ECP","EGE","ELP","EUG","EVV","EWN","EYW","FAI","FAR","FAT","FAY","FCA","FLL","FSD","FWA","GEG","GJT","GPT","GRB","GRR","GSO","GSP","GTF","GTR","GUM","HHH","HLN","HNL","HOU","HPN","HSV","HVN","ICT","ILM","IND","ISP","ITO","JAC","JAN","JAX","NYC","JLN","JNU","KOA","LBB","LCH","LEX","LGB","LIH","LIT","LNK","LRD","LYH","MAF","MCI","MDT","CHI","MEI","MEM","MFE","MFR","MGM","MHT","MKE","MLB","MLI","MOB","MOT","MQT","MSN","MSO","MSY","MTJ","MRY","MYR","OAK","OGG","OKC","OMA","ONT","ORF","ORH","PAE","PBI","PIA","PIT","PNS","PSC","PSP","PVD","PVU","PWM","RAP","RDD","RDM","RIC","RNO","ROA","ROC","RST","RSW","SAF","SAT","SAV","SBA","SBN","SDF","SCE","SGF","SHV","SJC","SJU","SMF","SNA","SRQ","STL","STS","STT","SUN","SUX","SWF","SYR","TLH","TUL","TUS","TVC","TWF","TYS","VPS","XNA","YUM"]
       },
       
       pointLimits: {
@@ -161,13 +160,6 @@
       }
     };
 
-    // ==================== UTILITY FUNCTIONS ====================
-    
-    /**
-     * Get airport size category
-     * @param {string} code - Airport code
-     * @returns {string|null} Size category or null if invalid
-     */
     function getAirportSize(code) {
       const upperCode = (code || "").toUpperCase();
       if (CONFIG.airports.big.includes(upperCode)) return "Big";
@@ -176,17 +168,10 @@
       return null;
     }
 
-    /**
-     * Remove non-numeric characters from string
-     * @param {string} str - Input string
-     * @param {boolean} allowDecimal - Whether to allow decimal points
-     * @returns {string} Cleaned numeric string
-     */
     function stripNonNumeric(str, allowDecimal = false) {
       const regex = allowDecimal ? /[^0-9.]/g : /[^0-9]/g;
       let cleaned = (str || "").toString().replace(regex, "");
       
-      // Ensure only one decimal point
       if (allowDecimal && cleaned.includes(".")) {
         const parts = cleaned.split(".");
         cleaned = parts[0] + "." + parts.slice(1).join("");
@@ -195,12 +180,6 @@
       return cleaned;
     }
 
-    /**
-     * Format number string with thousand separators
-     * @param {string} str - Numeric string
-     * @param {boolean} allowDecimal - Whether to preserve decimals
-     * @returns {string} Formatted string
-     */
     function formatWithCommas(str, allowDecimal = false) {
       const cleaned = stripNonNumeric(str, allowDecimal);
       if (!cleaned) return "";
@@ -213,34 +192,18 @@
       return Number(cleaned).toLocaleString();
     }
 
-    /**
-     * Parse formatted number string to float
-     * @param {string} str - Formatted number string
-     * @returns {number} Parsed number or NaN
-     */
     function parseFormattedNumber(str) {
       if (!str) return NaN;
       return parseFloat(str.toString().replace(/,/g, ""));
     }
 
-    /**
-     * Attach live formatting to number input
-     * @param {HTMLInputElement} input - Input element
-     * @param {boolean} allowDecimal - Whether to allow decimals
-     */
     function attachNumberFormatter(input, allowDecimal = false) {
-      // Format on input
       input.addEventListener("input", () => {
         const caretPos = input.selectionStart || 0;
         const rawValue = input.value;
-        
-        // Count digits before caret
         const digitsBeforeCaret = rawValue.slice(0, caretPos).replace(/[^0-9]/g, "").length;
-        
-        // Format value
         input.value = formatWithCommas(rawValue, allowDecimal) || "";
         
-        // Restore caret position
         let digitsSeen = 0;
         let newCaretPos = input.value.length;
         
@@ -257,7 +220,6 @@
         input.setSelectionRange(newCaretPos, newCaretPos);
       });
 
-      // Format on paste
       input.addEventListener("paste", (e) => {
         e.preventDefault();
         const pastedText = (e.clipboardData || window.clipboardData).getData("text") || "";
@@ -267,11 +229,6 @@
       });
     }
 
-    /**
-     * Calculate CPP tier based on value
-     * @param {number} cpp - CPP value in cents
-     * @returns {string} Tier name
-     */
     function getCppTier(cpp) {
       if (cpp < CONFIG.cppTiers.POOR.max) return 'POOR';
       if (cpp < CONFIG.cppTiers.FAIR.max) return 'FAIR';
@@ -279,53 +236,46 @@
       return 'EXCELLENT';
     }
 
-    /**
-     * Get recommendation message based on deal quality and CPP
-     * @param {boolean} meetsStandards - Whether deal meets point/tax standards
-     * @param {string} cppTier - CPP tier (POOR/FAIR/GOOD/EXCELLENT)
-     * @param {boolean} highTaxes - Whether taxes exceed cap (for special messaging)
-     * @returns {object} Object with className and message
-     */
     function getRecommendation(meetsStandards, cppTier, highTaxes = false) {
       const recommendations = {
         good: {
           POOR: {
             class: 'maybe',
-            text: '💵 Cash wins. This is a solid points redemption, but the cash price is even better. If you\'re set on using points, try booking through your credit card travel portal instead.'
+            text: '💵 <strong>Cash wins.</strong> This is a solid points redemption, but the cash price is even better. If you\'re set on using points, try booking through your credit card travel portal instead.'
           },
           FAIR: {
             class: 'maybe',
-            text: '🔄 Cash beats points. The redemption is solid, but the cash price is better. Unless you\'re swimming in points (if so, lucky you!), you\'re better off paying in cash.'
+            text: '🔄 <strong>Cash beats points.</strong> The redemption is solid, but the cash price is better. Unless you\'re swimming in points (if so, lucky you!), you\'re better off paying in cash.'
           },
           GOOD: {
             class: 'yes',
-            text: '✈️ Solid points deal. Book with points. This is a good redemption.'
+            text: '✈️ <strong>Solid points deal.</strong> Book with points. This is a good redemption.'
           },
           EXCELLENT: {
             class: 'strong-yes',
-            text: '⚡ Book fast. This is a great points deal. Stop reading and start transferring.'
+            text: '⚡ <strong>Book fast.</strong> This is a great points deal. Stop reading and start transferring.'
           }
         },
         bad: {
           POOR: {
             class: 'no',
-            text: '❌ Skip the redemption. This one\'s not worth your points. Book with cash, or if you\'re set on using points, check out your credit card\'s travel portal.'
+            text: '❌ <strong>Skip the redemption.</strong> This one\'s not worth your points. Book with cash, or if you\'re set on using points, check out your credit card\'s travel portal.'
           },
           FAIR: {
             class: 'no',
-            text: '💳 Better deal in your credit card portal. Cash wins this time, but if you\'re set on using points, check out your credit card\'s travel portal.'
+            text: '💳 <strong>Better deal in your credit card portal.</strong> Cash wins this time, but if you\'re set on using points, check out your credit card\'s travel portal.'
           },
           GOOD: {
             class: highTaxes ? 'maybe' : 'yes',
             text: highTaxes 
-              ? '⏳ Hold off for now. Both the cash and points prices are high. If you\'ve got time, set a price alert and wait for a better deal.'
-              : '🟢 Solid redemption. Taxes are a bit higher, but the overall value still makes this a great redemption.'
+              ? '⏳ <strong>Hold off for now.</strong> Both the cash and points prices are high. If you\'ve got time, set a price alert and wait for a better deal.'
+              : '🟢 <strong>Solid redemption.</strong> Taxes are a bit higher, but the overall value still makes this a great redemption.'
           },
           EXCELLENT: {
             class: highTaxes ? 'maybe' : 'yes',
             text: highTaxes 
-              ? '📉 Wait for a price drop. Both the cash and points prices are high. If you\'ve got time, set a price alert and wait for a better deal.'
-              : '🟢 Solid redemption. Taxes are a bit higher, but the overall value still makes this a great redemption.'
+              ? '📉 <strong>Wait for a price drop.</strong> Both the cash and points prices are high. If you\'ve got time, set a price alert and wait for a better deal.'
+              : '🟢 <strong>Solid redemption.</strong> Taxes are a bit higher, but the overall value still makes this a great redemption.'
           }
         }
       };
@@ -334,9 +284,6 @@
       return recommendations[category][cppTier];
     }
 
-    // ==================== DOM INITIALIZATION ====================
-    
-    // Get form elements
     const elements = {
       origin: document.getElementById('origin'),
       destination: document.getElementById('destination'),
@@ -354,7 +301,6 @@
       recommendation: document.getElementById('recommendation')
     };
 
-    // Setup input formatters
     elements.origin.addEventListener('input', () => {
       elements.origin.value = elements.origin.value.replace(/[^a-zA-Z]/g, "").toUpperCase().slice(0, 3);
     });
@@ -363,12 +309,9 @@
     attachNumberFormatter(elements.taxes, true);
     attachNumberFormatter(elements.cashPrice, true);
 
-    // ==================== FORM SUBMISSION ====================
-    
     elements.form.addEventListener('submit', function(e) {
       e.preventDefault();
 
-      // Parse input values
       const formData = {
         origin: elements.origin.value.toUpperCase(),
         destination: elements.destination.value,
@@ -380,7 +323,6 @@
           : NaN
       };
 
-      // Validate inputs
       const airportSize = getAirportSize(formData.origin);
       if (!airportSize) {
         alert('Please enter a valid US airport code.');
@@ -397,62 +339,51 @@
         return;
       }
 
-      // Check deal quality against standards
       const maxPoints = CONFIG.pointLimits[airportSize][formData.destination][formData.fareClass];
       const taxCap = CONFIG.taxCaps[formData.fareClass];
       const meetsStandards = formData.points <= maxPoints && formData.taxes <= taxCap;
 
-      // Update deal quality display
       elements.dealCard.className = `result-card deal-quality ${meetsStandards ? 'good' : 'bad'}`;
       elements.dealStatus.textContent = meetsStandards ? '✅ GOOD' : '❌ POOR';
-      elements.dealDetails.textContent = meetsStandards ? 'Meets standards' : 'Not recommended';
+      elements.dealDetails.textContent = '';
 
-      // Calculate and display CPP if cash price provided
       let recommendationText, recommendationClass;
       
       if (Number.isFinite(formData.cashPrice) && formData.cashPrice > 0) {
         const cpp = ((formData.cashPrice - formData.taxes) / formData.points) * 100;
         const cppTier = getCppTier(cpp);
         
-        // Update CPP display
         elements.cppValue.textContent = cpp.toFixed(2) + '¢';
-        elements.cppRating.textContent = CONFIG.cppTiers[cppTier].label;
+        elements.cppRating.textContent = '';
         
-        // Check if high taxes situation for special messaging
         const highTaxes = (formData.taxes > taxCap && formData.points <= maxPoints);
         
-        // Get recommendation
         const rec = getRecommendation(meetsStandards, cppTier, highTaxes);
         recommendationClass = rec.class;
         recommendationText = rec.text;
       } else {
-        // No cash price entered
         elements.cppValue.textContent = '—';
-        elements.cppRating.textContent = 'Add a cash price to calculate CPP';
+        elements.cppRating.textContent = 'Add a cash price to calculate cents per point';
         
         if (meetsStandards) {
           recommendationClass = 'yes';
-          recommendationText = '💍 Great use of points. Just add in the cash fare price to make sure you\'re getting the best value.';
+          recommendationText = '💎 <strong>Great use of points.</strong> Just add in the cash fare price to make sure you\'re getting the best value.';
         } else {
           const taxExceedsCap = formData.taxes > taxCap;
           const pointsExceedLimit = formData.points > maxPoints;
           
           recommendationClass = 'no';
           if (taxExceedsCap && !pointsExceedLimit) {
-            // Good award rate but high taxes
-            recommendationText = '💰 Taxes kill the deal. Taxes are higher than usual for this redemption. Enter the cash fare to see if paying out of pocket gives you a better deal.';
+            recommendationText = '💰 <strong>Taxes kill the deal.</strong> Taxes are higher than usual for this redemption. Enter the cash fare to see if paying out of pocket gives you a better deal.';
           } else {
-            // High award rate (points exceed limit)
-            recommendationText = '🚫 Not worth your points. The redemption rate isn\'t great. You can get way more value elsewhere.\n\nCheck out our current live points deals to see how far your points can go, or check if you should book with cash.';
+            recommendationText = '🚫 <strong>Not worth your points.</strong> The redemption rate isn\'t great. You can get way more value elsewhere.\n\nCheck out our current live points deals to see how far your points can go, or check if you should book with cash.';
           }
         }
       }
 
-      // Display recommendation
       elements.recommendation.className = `recommendation ${recommendationClass}`;
       elements.recommendation.innerHTML = recommendationText;
 
-      // Show results
       elements.resultsGrid.style.display = 'grid';
       elements.recommendation.style.display = 'block';
     });
