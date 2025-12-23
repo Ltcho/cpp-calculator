@@ -349,7 +349,13 @@ credit card’s travel portal</a>.`
 
       elements.dealCard.className = `result-card deal-quality ${meetsStandards ? 'good' : 'bad'}`;
       elements.dealStatus.textContent = meetsStandards ? '✅ GOOD' : '❌ POOR';
-      elements.dealDetails.textContent = '';
+const taxesTooHigh = formData.taxes > taxCap;
+const pointsTooHigh = formData.points > maxPoints;
+
+elements.dealDetails.textContent =
+  (!meetsStandards && taxesTooHigh && !pointsTooHigh)
+    ? '(High taxes)'
+    : '';
 
       let recommendationText, recommendationClass;
       
